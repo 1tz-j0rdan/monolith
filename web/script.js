@@ -2,7 +2,7 @@ log = [];
 filename = '';
 
 let map = new kakao.maps.Map(document.getElementById('map'), {
-  center: new kakao.maps.LatLng(37.2829317, 127.0435822)
+  center: new kakao.maps.LatLng(34.68883310937535, -82.86749937884164)
 });
 Chart.register(window['chartjs-plugin-autocolors']);
 
@@ -15,7 +15,7 @@ $('#file').change(async function() {
     let reader = new FileReader();
     reader.readAsArrayBuffer(file);
     reader.onload = function (evt) {
-      $('#load_file_first').text(`파일 변환 중...`);
+      $('#load_file_first').text(`Converting file...`);
 
       let raw = new Blob([evt.target.result], { type: 'application/octet-stream' });
       filename = file.name;
@@ -44,7 +44,7 @@ async function process_log(raw) {
   while (index < buffer.length) {
     let converted = translate(buffer.slice(index, index + log_size));
 
-    if (!(converted instanceof Error)) {
+    if (converted) {
       converted.datetime = new Date(file_date.getTime() + converted.timestamp).format('yyyy-mm-dd HH:MM:ss.l');
       log.push(converted);
     } else {
@@ -57,7 +57,7 @@ async function process_log(raw) {
   // process finished
   console.log(log);
 
-  $('#load_file_first').text(`현재 파일: ${filename}`);
+  $('#load_file_first').text(`Current File: ${filename}`);
   $('.btn_download, #add_graph').removeClass('disabled');
 
   $("#data-count").text(count);
@@ -118,9 +118,9 @@ $('#add_graph').click(async function() {
   $('#graphs').append(`<div id='graph_${graph_count}'>
   <div>
     <span id='add_graph_data_${graph_count}' class='add_graph_data btn green' style='height: 1.5rem; line-height: 1.5rem;'>
-      <i class='fa-solid fa-fw fa-magnifying-glass-plus'></i>&ensp;데이터 추가</span>
+      <i class='fa-solid fa-fw fa-magnifying-glass-plus'></i>&ensp;Add Data</span>
     <span id='delete_graph_${graph_count}' class='delete_graph btn red' style='height: 1.5rem; line-height: 1.5rem;'>
-      <i class='fa-solid fa-fw fa-x'></i>&ensp;그래프 삭제</span>
+      <i class='fa-solid fa-fw fa-x'></i>&ensp;Delete Graph</span>
   </div>
   <canvas id='graph_canvas_${graph_count}' class='graph canvas_disabled' width='100%' height='55vh'></canvas>
   <hr style='margin-top: 1.5rem; margin-bottom: 1rem;'>
@@ -183,7 +183,7 @@ $('#add_graph').click(async function() {
           },
           zoom: {
             enabled: true,
-            zoomButtonText: '줌 리셋',
+            zoomButtonText: 'Reset Zoom',
             zoomButtonClass: 'reset-zoom btn purple',
           },
           callbacks: {
@@ -219,26 +219,26 @@ $(document.body).on('click', '.add_graph_data', async e => {
   let html = `<div style='text-align: left'>
   <label>
     <span style='font-weight: bold; font-size: 1.25rem;'>
-      <input type='radio' name='data_type' value='standard' onclick='$("#can_data_div").addClass("disabled"); $("#standard_data_div").removeClass("disabled")' checked></input>&ensp;일반 데이터 추가
+      <input type='radio' name='data_type' value='standard' onclick='$("#can_data_div").addClass("disabled"); $("#standard_data_div").removeClass("disabled")' checked></input>&ensp;Add General Data
     </span>
   </label>
   <div id='standard_data_div' style='margin-top: 1rem; margin-bottom: 2rem; margin-left: 2rem;'>
     <select id='select_data' style='width: 18rem; height: 2rem;'>
-      <option value='' disabled selected>그래프에 추가할 데이터를 선택하세요.</option>${param.map(x => `<option value='${x.source}/${x.key}/${x.param}'>${x.source} / ${x.param}</option>`)}
+      <option value='' disabled selected>Select the data to ad to graph.</option>${param.map(x => `<option value='${x.source}/${x.key}/${x.param}'>${x.source} / ${x.param}</option>`)}
     </select>
   </div>
   <label>
     <span style='font-weight: bold; font-size: 1.25rem;'>
-      <input type='radio' name='data_type' value='can' onclick='$("#standard_data_div").addClass("disabled"); $("#can_data_div").removeClass("disabled");'></input>&ensp;CAN 데이터 추가
+      <input type='radio' name='data_type' value='can' onclick='$("#standard_data_div").addClass("disabled"); $("#can_data_div").removeClass("disabled");'></input>&ensp;CAN Add Data
     </span>
   </label>
   <div id='can_data_div' class='disabled' style='margin-top: 1rem; margin-bottom: 2rem; margin-left: 2rem;'>
     <!--
-    <select id='can_favorite' style='width: 18rem; height: 2rem;'><option value='' disabled selected>즐겨찾기에서 선택</option>${0}</select>
+    <select id='can_favorite' style='width: 18rem; height: 2rem;'><option value='' disabled selected>Select from Favorites</option>${0}</select>
     -->
     <table style='margin-top: .7rem;'>
       <tr>
-        <td>레이블</td>
+        <td>Label</td>
         <td>: <input id='data_label' class='data_input'></td>
       </tr>
       <tr>
@@ -246,7 +246,7 @@ $(document.body).on('click', '.add_graph_data', async e => {
         <td>: <input id='can_data_id' type='number' class='data_input'>&ensp;(0x<span id='can_data_id_hex'>00</span>)</td>
       </tr>
       <tr>
-        <td>데이터</td>
+        <td>Data</td>
         <td>: <label><input type='radio' name='level' value='byte' onclick='$("#byte_form").css("display", "block"); $("#bit_form").css("display", "none");' checked></input> Byte</label> <label style='margin-left: .8rem;'><input type='radio' name='level' onclick='$("#bit_form").css("display", "block"); $("#byte_form").css("display", "none");' value='bit'></input> Bit</label></td>
       </tr>
     </table>
@@ -272,17 +272,17 @@ $(document.body).on('click', '.add_graph_data', async e => {
       </table>
     </div>
     <!--
-    <div style='margin-top: .7rem;'><label><input id='add_to_favorite' type='checkbox'></input> 즐겨찾기에 추가</label></div>
+    <div style='margin-top: .7rem;'><label><input id='add_to_favorite' type='checkbox'></input> Add to Favorites</label></div>
     -->
   </div>
-  <div><span style='font-weight: bold;'>데이터 배율</span>&ensp;&ensp;x <input id='scale' type='number' class='short' value=1></div>
+  <div><span style='font-weight: bold;'>Data Scale</span>&ensp;&ensp;x <input id='scale' type='number' class='short' value=1></div>
 </div>`;
 
   Swal.fire({
     html: html,
     showCancelButton: true,
-    confirmButtonText: '데이터 추가',
-    cancelButtonText: '취소',
+    confirmButtonText: 'Add Data',
+    cancelButtonText: 'Cancel',
     customClass: {
       confirmButton: 'btn green',
       cancelButton: 'btn red'
@@ -552,7 +552,7 @@ var dateFormat = function () {
         t:    H < 12 ? 'a'  : 'p',
         tt:   H < 12 ? 'am' : 'pm',
         T:    H < 12 ? 'A'  : 'P',
-        TT:   H < 12 ? '오전' : '오후',
+        TT:   H < 12 ? 'A.M.' : 'P.M.',
         Z:    utc ? 'UTC' : (String(date).match(timezone) || ['']).pop().replace(timezoneClip, ''),
         o:    (o > 0 ? '-' : '+') + pad(Math.floor(Math.abs(o) / 60) * 100 + Math.abs(o) % 60, 4),
         S:    ['th', 'st', 'nd', 'rd'][d % 10 > 3 ? 0 : (d % 100 - d % 10 != 10) * d % 10]
@@ -565,8 +565,8 @@ var dateFormat = function () {
 dateFormat.masks = {'default':'ddd mmm dd yyyy HH:MM:ss'};
 dateFormat.i18n = {
   dayNames: [
-    '일', '월', '화', '수', '목', '금', '토',
-    '일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'
+    'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat',
+    'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
   ],
   monthNames: [
     'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
