@@ -1,9 +1,9 @@
 if (typeof io === typeof undefined) {
   Swal.fire({
     icon: 'error',
-    title: '서버 응답 없음',
-    html: `소켓 서버가 응답하지 않습니다.`,
-    confirmButtonText: '확인',
+    title: 'Server not responding',
+    html: `The socket server is not responding.`,
+    confirmButtonText: 'Confirm',
     customClass: {
       confirmButton: 'btn green',
     }
@@ -42,9 +42,9 @@ socket.on('disconnect', () => {
     if (!localStorage.getItem('id') && !localStorage.getItem('key')) {
       Swal.fire({
         icon: 'info',
-        title: '차량 ID 정보 없음',
-        html: '<div style="line-height: 2.5rem;">차량 ID가 설정되지 않았습니다.<br>먼저 차량 ID와 key를 설정해 주세요.</div>',
-        confirmButtonText: '확인',
+        title: 'No Vehicle ID information',
+        html: '<div style="line-height: 2.5rem;">Vehicle ID has not been set.<br>Please set the vehicle ID and key first.</div>',
+        confirmButtonText: 'Confirm',
         customClass: {
           confirmButton: 'btn green',
         }
@@ -52,9 +52,9 @@ socket.on('disconnect', () => {
     } else { // invalid car id cookies
       Swal.fire({
         icon: 'error',
-        title: '서버 연결 비활성화',
-        html: '<div style="line-height: 2.5rem;">서버에서 연결을 거부했습니다.<br>차량 ID와 key 설정을 확인하세요.</div>',
-        confirmButtonText: '확인',
+        title: 'Server connection disabled',
+        html: '<div style="line-height: 2.5rem;">The server refused connection.<br>Check the vehicle ID and key settings.</div>',
+        confirmButtonText: 'Confirm',
         customClass: {
           confirmButton: 'btn green',
         }
@@ -166,9 +166,9 @@ if (ui) {
   } catch (e) {
     Swal.fire({
       icon: 'error',
-      title: '잘못된 UI 설정 파일',
-      html: '<div style="line-height: 2.5rem;">UI 설정을 해석할 수 없습니다.<br>UI를 새로 설정해 주세요.</div>',
-      confirmButtonText: '확인',
+      title: ' UI settings are incorrect',
+      html: '<div style="line-height: 2.5rem;">Unable to interpret UI settings..<br>Reconfigure the UI.</div>',
+      confirmButtonText: 'Confirm',
       customClass: {
         confirmButton: 'btn green',
       }
@@ -763,14 +763,14 @@ function readfile(file) {
 function create_html(type, data) {
   switch (type) {
     case 'config_car':
-      return `<div style='text-align: left;'><span style='font-size: 1.7rem; font-weight: bold;'>차량 ID 설정</span></div>
+      return `<div style='text-align: left;'><span style='font-size: 1.7rem; font-weight: bold;'>Vehicle ID Setup</span></div>
       <div>
-        <p>사용자 등록 시 설정한 차량 ID와 key를 입력하세요.</p>
-        <p>입력한 정보는 브라우저에 저장됩니다.</p>
+        <p>Enter the assigned vehicle ID and key set for this car.</p>
+        <p>Information entered will be stored in the browser.</p>
       </div>
       <table style='margin: auto;'>
         <tr>
-          <td style='text-align: left; line-height: 1.5rem;'>차량 ID</td>
+          <td style='text-align: left; line-height: 1.5rem;'>Vehicle ID</td>
           <td>: <input id='car_id' class='data_input' value='${data.id ? data.id : ''}'></td>
         </tr>
         <tr>
@@ -778,41 +778,39 @@ function create_html(type, data) {
           <td>: <input id='car_id_key' type='password' class='data_input' value='${data.key ? data.key : ''}'></td>
         </tr>
       </table>
-      <div style='margin-top: 1.5rem; font-size: 1rem;'>
-        <p>사용자 등록 신청: <a href='mailto:mail@luftaquila.io' style='text-decoration: none; color: #0366d6'>mail@luftaquila.io</a><br>학교와 팀 이름, 사용할 차량 ID와 key를 보내주세요.</p>
       </div>`;
       break;
 
     case 'config_ui':
-      return `<div style='text-align: left;'><span style='font-size: 1.7rem; font-weight: bold;'>UI 설정</span></div>
+      return `<div style='text-align: left;'><span style='font-size: 1.7rem; font-weight: bold;'>UI Settings</span></div>
       <div id='ui_area'></div>
       <div style='margin-top: 1rem;'>
-        <span id='add_data_group' class='btn green' style='height: 1.5rem; line-height: 1.5rem;'><i class='fa-regular fa-fw fa-plus'></i>&ensp;데이터 그룹 추가</span>
+        <span id='add_data_group' class='btn green' style='height: 1.5rem; line-height: 1.5rem;'><i class='fa-regular fa-fw fa-plus'></i>&ensp;Add Data Group</span>
       </div>
       <div style='margin-top: 1rem;'>
-        <span id='export_ui' class='btn purple' style='height: 1.5rem; line-height: 1.5rem;'><i class='fa-solid fa-fw fa-file-export'></i>&ensp;UI 설정 내보내기</span>
-        <span id='import_ui' class='btn purple' style='height: 1.5rem; line-height: 1.5rem;'><i class='fa-solid fa-fw fa-file-import'></i>&ensp;UI 설정 불러오기</span>
+        <span id='export_ui' class='btn purple' style='height: 1.5rem; line-height: 1.5rem;'><i class='fa-solid fa-fw fa-file-export'></i>&ensp;UI Export Settings</span>
+        <span id='import_ui' class='btn purple' style='height: 1.5rem; line-height: 1.5rem;'><i class='fa-solid fa-fw fa-file-import'></i>&ensp;UI Import Settings</span>
       </div>`;
       break;
 
     case 'config_datagroup':
       return `<div id='datagroup_${data.id}' class='datagroup' style='text-align: left; margin-top: 2rem; border: 2px solid lightgrey; background-color: #eeeeee; border-radius: 10px; padding: 1rem;'>
         <i id='datagroup_icon_${data.id}' class='fa-solid fa-fw fa-${data.default ? 'circle-info': data.icon}'></i>&ensp;
-        <input id='datagroup_name_${data.id}' value='${data.default ? '' : data.name}' placeholder='데이터그룹 이름' maxlength='20' style='font-size: 1.2rem; height: 1.8rem; width: 10rem; font-weight: bold; color: #333333; padding-left: .5rem;'>
-        <span id='delete_datagroup_${data.id}' class='delete_datagroup btn red' style='height: 1.2rem; line-height: 1.2rem; transform: translate(0px, -0.25rem);'>삭제</span>
+        <input id='datagroup_name_${data.id}' value='${data.default ? '' : data.name}' placeholder='Data Group Name' maxlength='20' style='font-size: 1.2rem; height: 1.8rem; width: 10rem; font-weight: bold; color: #333333; padding-left: .5rem;'>
+        <span id='delete_datagroup_${data.id}' class='delete_datagroup btn red' style='height: 1.2rem; line-height: 1.2rem; transform: translate(0px, -0.25rem);'>Delete</span>
         <div style='margin-top: .5rem; margin-bottom: 1rem;'>
           <table>
             <tr>
-              <td>아이콘</td>
-              <td>: <input id='datagroup_iconname_${data.id}' class='datagroup_iconname' value='${data.default ? 'circle-info' : data.icon}' placeholder='아이콘 이름' maxlength='30' style='width: 6rem; height: 1.2rem; line-height: 1.2rem; padding-left: .3rem;'></td>
-              <td>&ensp;<a href='https://fontawesome.com/search?o=r&m=free&s=solid' target='_blank' style='font-size: .8rem; text-decoration: underline; color: #0366d6'>검색</a></td>
+              <td>Icon</td>
+              <td>: <input id='datagroup_iconname_${data.id}' class='datagroup_iconname' value='${data.default ? 'circle-info' : data.icon}' placeholder='Icon Name' maxlength='30' style='width: 6rem; height: 1.2rem; line-height: 1.2rem; padding-left: .3rem;'></td>
+              <td>&ensp;<a href='https://fontawesome.com/search?o=r&m=free&s=solid' target='_blank' style='font-size: .8rem; text-decoration: underline; color: #0366d6'>Search</a></td>
             </tr>
           </table>
         </div>
         <div id='datagroup_dataarea_${data.id}' style='margin-top: .5rem; margin-bottom: .5rem;'></div>
         <div style='text-align: center;'>
         <span id='add_data_${data.id}' class='add_data btn green' style='height: 1.2rem; line-height: 1.2rem;'>
-          <i class='fa-regular fa-fw fa-plus'></i>&ensp;데이터 추가</span>
+          <i class='fa-regular fa-fw fa-plus'></i>&ensp;Add Data</span>
         </div>
       </div>`;
       break;
@@ -820,28 +818,28 @@ function create_html(type, data) {
     case 'config_data':
       return `<div id='data_${data.id}' class='datagroup_data' style='text-align: left; background-color: #dddddd; border: 1px solid #dddddd; border-radius: 10px; padding: .8rem; margin-bottom: 1rem;'>
       <i id='data_icon_${data.id}' class='fa-solid fa-fw fa-${data.default ? 'database' : data.icon}'></i>&ensp;
-      <input id='data_name_${data.id}' value='${data.default ? '' : data.name}' placeholder='데이터 이름' maxlength='20' style='font-size: 1.1rem; width: 12rem; height: 1.5rem; padding-left: .3rem;'>
+      <input id='data_name_${data.id}' value='${data.default ? '' : data.name}' placeholder='Data Name' maxlength='20' style='font-size: 1.1rem; width: 12rem; height: 1.5rem; padding-left: .3rem;'>
       <div style='margin-top: 1rem;'>
         <table>
           <tr>
-            <td>아이콘</td>
-            <td>: <input id='data_iconname_${data.id}' class='data_iconname' value='${data.default ? 'database' : data.icon}' placeholder='아이콘 이름' maxlength='30' style='width: 6rem; height: 1.2rem; line-height: 1.2rem; padding-left: .3rem;'></td>
+            <td>Icon</td>
+            <td>: <input id='data_iconname_${data.id}' class='data_iconname' value='${data.default ? 'database' : data.icon}' placeholder='Icon Name' maxlength='30' style='width: 6rem; height: 1.2rem; line-height: 1.2rem; padding-left: .3rem;'></td>
           </tr>
           <tr>
-            <td>디스플레이</td>
-            <td>: <select id='data_type_${data.id}' class='data_type' style='height: 1.5rem;'><option value='' disabled ${data.default ? 'selected' : ''}>디스플레이 타입</option>${data_types.map(x => `<option value='${x}' ${(!data.default && data.display === x) ? 'selected' : ''}>${x}</option>`)}</select></td>
+            <td>Display</td>
+            <td>: <select id='data_type_${data.id}' class='data_type' style='height: 1.5rem;'><option value='' disabled ${data.default ? 'selected' : ''}>Display Type</option>${data_types.map(x => `<option value='${x}' ${(!data.default && data.display === x) ? 'selected' : ''}>${x}</option>`)}</select></td>
           </tr>
         </table>
       </div>
       <div id='div_dataspec_${data.id}' style='margin-top: 1rem; display: ${(!data.default && data.display === 'gps') ? 'none' : 'block'}'>
-        <label><input type='radio' name='data_type_${data.id}' value='standard' onclick='$("#can_data_div_${data.id}").css("display", "none"); $("#standard_data_div_${data.id}").css("display", "block")' ${(data.default || data.display === 'gps' || data.type === 'standard') ? 'checked' : ''}></input>&nbsp;일반</label>&ensp;
+        <label><input type='radio' name='data_type_${data.id}' value='standard' onclick='$("#can_data_div_${data.id}").css("display", "none"); $("#standard_data_div_${data.id}").css("display", "block")' ${(data.default || data.display === 'gps' || data.type === 'standard') ? 'checked' : ''}></input>&nbsp;General</label>&ensp;
         <label><input type='radio' name='data_type_${data.id}' value='can' onclick='$("#standard_data_div_${data.id}").css("display", "none"); $("#can_data_div_${data.id}").css("display", "block");' ${(!data.default && data.type === 'can') ? 'checked' : ''}></input>&nbsp;CAN</label>
         <div id='standard_data_div_${data.id}' style='margin-top: 1rem; margin-bottom: 1rem; display: ${(data.default || data.display === 'gps' || data.type === 'standard') ? 'block' : 'none'}'>
-          <select id='select_data_${data.id}' style='width: 16rem; height: 2rem;'><option value='' disabled ${data.default || data.display === 'gps' || data.type === 'can' ? 'selected' : ''}>데이터 소스 선택</option>${standard_records.map(x => `<option value='${x}' ${(!data.default && data.source === x) ? 'selected' : ''}>${x}</option>`)}</select>
+          <select id='select_data_${data.id}' style='width: 16rem; height: 2rem;'><option value='' disabled ${data.default || data.display === 'gps' || data.type === 'can' ? 'selected' : ''}>Select Data Source</option>${standard_records.map(x => `<option value='${x}' ${(!data.default && data.source === x) ? 'selected' : ''}>${x}</option>`)}</select>
         </div>
         <div id='can_data_div_${data.id}' style='display: ${(!data.default && data.type === 'can') ? 'block' : 'none'}; margin-top: 1rem; margin-bottom: 1rem;'>
           <!--
-          <select id='can_favorite_${data.id}' style='width: 16rem; height: 2rem;'><option value='' disabled selected>즐겨찾기에서 선택</option>${0}</select>
+          <select id='can_favorite_${data.id}' style='width: 16rem; height: 2rem;'><option value='' disabled selected>Select from Favorites</option>${0}</select>
           -->
           <table style='margin-top: .7rem;'>
             <tr>
@@ -849,7 +847,7 @@ function create_html(type, data) {
               <td>: <input id='can_data_id_${data.id}' value='${(!data.default && data.type === 'can') ? data.source.id : ''}' type='number' class='can_data_id data_input' style='width: 5rem;'>&ensp;(0x<span id='can_data_id_hex_${data.id}'>${(!data.default && data.type === 'can') ? data.source.id.toString(16).toUpperCase() : '00'}</span>)</td>
             </tr>
             <tr>
-              <td>데이터</td>
+              <td>Data</td>
               <td>
                 : <label><input type='radio' name='level_${data.id}' value='byte' onclick='$("#byte_form_${data.id}").css("display", "block"); $("#bit_form_${data.id}").css("display", "none");' ${(data.default || data.display === 'gps' || (data.type === 'standard') || (data.type === 'can' && data.source.byte)) ? 'checked' : ''}></input> Byte</label>
                 <label style='margin-left: .8rem;'><input type='radio' name='level_${data.id}' onclick='$("#bit_form_${data.id}").css("display", "block"); $("#byte_form_${data.id}").css("display", "none");' value='bit' ${(!data.default && data.type === 'can' && data.source.bit) ? 'checked' : ''}></input> Bit</label>
@@ -876,24 +874,24 @@ function create_html(type, data) {
             </table>
           </div>
           <!--
-          <div style='margin-top: .7rem;'><label><input id='add_to_favorite_${data.id}' type='checkbox'></input> 즐겨찾기에 추가</label></div>
+          <div style='margin-top: .7rem;'><label><input id='add_to_favorite_${data.id}' type='checkbox'></input> Add to Favorites</label></div>
           -->
         </div>
       </div>
       <table id='datainfo_${data.id}' style='display: ${data.display === 'gps' || data.display === 'digital' ? 'none' : 'block'}'>
         <tr>
-          <td>데이터 단위</td>
+          <td>Data Unit</td>
           <td style='width: 1rem;'></td>
           <td><input id='unit_${data.id}' class='short' value='${data.default || !data.unit ? '' : data.unit}'></td>
         </tr>
         <tr>
-          <td>데이터 배율</td>
+          <td>Data Scale</td>
           <td style='width: 1rem; text-align: right'>x</td>
           <td><input id='scale_${data.id}' type='number' class='short' value='${data.default || !data.scale ? 1 : data.scale}'></td>
         </tr>
       </table>
       <div style='text-align: center'>
-        <span id='delete_data_${data.id}' class='delete_data btn red' style='height: 1.2rem; line-height: 1.2rem;'>삭제</span>
+        <span id='delete_data_${data.id}' class='delete_data btn red' style='height: 1.2rem; line-height: 1.2rem;'>Delete</span>
       </div>
       </div>`;
       break;
